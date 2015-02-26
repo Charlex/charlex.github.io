@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    console.log('ready');
     // Define some starting variables
     var jsonp = $('#liveblogContainer').data('slug');
     var startdatetime = new Date($('#liveblogContainer').data("startdatetime"));
@@ -16,7 +15,6 @@ $(document).ready(function() {
     if ((nowdatetime > startdatetime && nowdatetime < enddatetime) || (enddatetime == "Invalid Date" || startdatetime == "Invalid Date")) {
         refreshDiv();
         setInterval(refreshDiv, 10000);
-        console.log("blog active!");
     }
 
     // Create a place to load new cards
@@ -110,7 +108,6 @@ $(document).ready(function() {
 
     // Begin our main auto refresher function
     function refreshDiv() {
-        console.log('reload!');
         $.ajax({
             url: jsonp,
             dataType: "jsonp",
