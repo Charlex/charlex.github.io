@@ -228,11 +228,9 @@ window.twttr = (function (d, s, id) {
         }
     });
 }(document, "script", "twitter-wjs"));
-    load_tweet();
-    load_instagram();
 
 function load_tweet(){
-    twttr.ready(function (twttr) {
+    window.twttr.ready(function (twttr) {
         $('.tweet-embed[data-tweet-id]').each(function(){
             twttr.widgets.createTweet( $(this).data('tweet-id'), this );
 
@@ -255,6 +253,9 @@ function load_instagram(){
         }
     });
 }
+
+    load_tweet();
+    load_instagram();
 
 
 });
