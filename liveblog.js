@@ -232,7 +232,7 @@ window.twttr = (function (d, s, id) {
 function load_tweet(){
     window.twttr.ready(function (twttr) {
         $('.tweet-embed[data-tweet-id]').each(function(){
-            twttr.widgets.createTweet( $(this).data('tweet-id'), this );
+            window.twttr.widgets.createTweet( $(this).data('tweet-id'), this );
 
             $(this).removeAttr('data-tweet-id');
         });
