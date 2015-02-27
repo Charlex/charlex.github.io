@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+    load_tweet();
+    load_instagram();
+
     // Define some starting variables
     var jsonp = $('#liveblogContainer').data('slug');
     var startdatetime = new Date($('#liveblogContainer').data("startdatetime"));
@@ -47,6 +51,9 @@ $(document).ready(function() {
             // Add unloaded cards to the new cards container
             $('#liveblogContainer #new_cards').append($(unloaded_cards[card_counting_array[i]]));
 
+            load_tweet();
+            load_instagram();
+
             // Slide down our new cards
             $('.story-well-container[data-card-id="' + card_counting_array[i] + '"]').slideDown();
 
@@ -93,6 +100,10 @@ $(document).ready(function() {
 
                         // Append the new cards
                         $('#liveblogContainer #old_cards').append("<div class='story-well-container' style='display:none;' data-card-id='" + data[i].card_id + "' data-order='" + data[i].order + "'>" + data[i].body + "</div>");
+
+                                load_tweet();
+                                load_instagram();
+
 
                         // Reveal the newly loaded cards
                         $('.story-well-container[data-card-id="' + data[i].card_id + '"]').slideDown();
@@ -146,6 +157,9 @@ $(document).ready(function() {
 
                                 // Append the card 
                                 $('#liveblogContainer #new_cards').append("<div class='story-well-container' style='display:none;' data-card-id='" + data[i].card_id + "' data-order='" + data[i].order + "'>" + data[i].body + "</div>");
+
+                                load_tweet();
+                                load_instagram();
 
                                 // Reveal the card
                                 $('.story-well-container[data-card-id="' + data[i].card_id + '"]').slideDown();
@@ -201,5 +215,48 @@ $(document).ready(function() {
             }
         });
     }
+
+window.twttr = (function (d, s, id) {
+    var t, js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    return window.twttr || (t = {
+        _e: [],
+        ready: function (f) {
+            t._e.push(f)
+        }
+    });
+}(document, "script", "twitter-wjs"));
+
+function load_tweet(){
+    twttr.ready(function (twttr) {
+        $('.tweet-embed[data-tweet-id]').each(function(){
+            twttr.widgets.createTweet( $(this).data('tweet-id'), this )
+
+            $(this).removeAttr('data-tweet-id');
+        });
+    });
+}
+
+function load_instagram(){
+
+    $('.instagram-embed[data-instagram-url]').each(function(){
+        var instagram_container = $(this);
+        var instagram_url = $(instagram_container).data('instagram-url');
+        if(instagram_url.indexOf('instagram.com') !== 0) {
+            $.getJSON( "http://api.instagram.com/oembed?url=" + instagram_url + "&omitscript=true&callback=?", function( data ){
+                        console.log(data.html)
+                        $(instagram_container).html(data.html);
+                        $(instagram_container).removeAttr('data-instagram-url');
+                        instgrm.Embeds.process();
+            });
+        }
+    });
+}
+
+
 });
 
