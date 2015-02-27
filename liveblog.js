@@ -1,7 +1,5 @@
 $(document).ready(function() {
 
-    load_tweet();
-    load_instagram();
 
     // Define some starting variables
     var jsonp = $('#liveblogContainer').data('slug');
@@ -230,11 +228,13 @@ window.twttr = (function (d, s, id) {
         }
     });
 }(document, "script", "twitter-wjs"));
+    load_tweet();
+    load_instagram();
 
 function load_tweet(){
     twttr.ready(function (twttr) {
         $('.tweet-embed[data-tweet-id]').each(function(){
-            twttr.widgets.createTweet( $(this).data('tweet-id'), this )
+            twttr.widgets.createTweet( $(this).data('tweet-id'), this );
 
             $(this).removeAttr('data-tweet-id');
         });
@@ -248,7 +248,6 @@ function load_instagram(){
         var instagram_url = $(instagram_container).data('instagram-url');
         if(instagram_url.indexOf('instagram.com') !== 0) {
             $.getJSON( "http://api.instagram.com/oembed?url=" + instagram_url + "&omitscript=true&callback=?", function( data ){
-                        console.log(data.html)
                         $(instagram_container).html(data.html);
                         $(instagram_container).removeAttr('data-instagram-url');
                         instgrm.Embeds.process();
